@@ -136,6 +136,7 @@ python-binance==1.0.22
 python-dateutil==2.9.0.post0
 python3-openid==3.2.0
 pytz==2024.2
+pywin32==308
 PyYAML==6.0.2
 qrcode==7.4.2
 referencing==0.35.1
@@ -167,6 +168,7 @@ tenacity==9.0.0
 tensorboard==2.17.1
 tensorboard-data-server==0.7.2
 tensorflow==2.17.0
+tensorflow-intel==2.17.0
 termcolor==2.5.0
 terminaltables==3.1.10
 threadpoolctl==3.5.0
@@ -184,6 +186,7 @@ watchdog==6.0.0
 websockets==13.1
 Werkzeug==3.0.4
 wheel==0.44.0
+whitenoise==6.8.2
 wrapt==1.16.0
 xmljson==0.2.1
 yacs==0.1.8
