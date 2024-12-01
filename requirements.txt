@@ -136,7 +136,6 @@ python-binance==1.0.22
 python-dateutil==2.9.0.post0
 python3-openid==3.2.0
 pytz==2024.2
-pywin32==308
 PyYAML==6.0.2
 qrcode==7.4.2
 referencing==0.35.1
