@@ -2,11 +2,15 @@
     "version": 2,
     "builds": [
       {
-        "src": "Dockerfile",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "build"
-        }
+        "src": "manage.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb" }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "manage.py"
       }
     ]
   }
