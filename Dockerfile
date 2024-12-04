@@ -1,32 +1,37 @@
-# Usa una imagen oficial de Python como base
-FROM python:3.12-slim
+# Usar una imagen base oficial de Python
+FROM python:3.10-slim
 
-# Instala las herramientas y dependencias del sistema necesarias
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libmariadb-dev \
-    pkg-config \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Establece el directorio de trabajo en el contenedor
+# Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia los archivos del proyecto al contenedor
-COPY . /app
+# Instalar herramientas necesarias y librerías de sistema para MySQL
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    build-essential \
+    libssl-dev \
+    --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instala las dependencias de Python
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# Copiar los archivos del proyecto al contenedor
+COPY . .
 
-# Establece las variables de entorno
-ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=ova_api.settings
-ENV PORT=8000
+# Instalar las dependencias de Python
+RUN pip install --no-cache-dir django==5.1.2
+RUN pip install --no-cache-dir djangorestframework
+RUN pip install --no-cache-dir django-cors-headers
+RUN pip install --no-cache-dir djangorestframework-simplejwt
+RUN pip install --no-cache-dir mysql-connector-python
+RUN pip install --no-cache-dir whitenoise
 
-# Recolecta los archivos estáticos y aplica las migraciones
-RUN python manage.py collectstatic --noinput && python manage.py migrate
+# Crear directorio para archivos estáticos
+RUN mkdir staticfiles
 
-# Expone el puerto configurado
+# Recopilar archivos estáticos
+RUN python manage.py collectstatic --noinput
+
+# Exponer el puerto 8000
 EXPOSE 8000
 
-# Comando para iniciar la aplicación
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "ova_api.wsgi:application"]
+# Comando para ejecutar el servidor de Django
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
